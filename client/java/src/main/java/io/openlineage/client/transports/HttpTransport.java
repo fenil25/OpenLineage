@@ -8,7 +8,7 @@ import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
 import io.openlineage.client.OpenLineage;
 import io.openlineage.client.OpenLineageClientException;
-import io.openlineage.client.Utils;
+import io.openlineage.client.OpenLineageClientUtils;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
@@ -59,7 +59,7 @@ public final class HttpTransport extends Transport implements Closeable {
 
   @Override
   public void emit(@NonNull OpenLineage.RunEvent runEvent) {
-    final String eventAsJson = Utils.toJson(runEvent);
+    final String eventAsJson = OpenLineageClientUtils.toJson(runEvent);
     log.debug("POST {}: {}", uri, eventAsJson);
     try {
       final HttpPost request = new HttpPost();
@@ -110,7 +110,8 @@ public final class HttpTransport extends Transport implements Closeable {
    * }</pre>
    */
   public static final class Builder {
-    private static final URI DEFAULT_OPENLINEAGE_URI = Utils.toUri("http://localhost:8080");
+    private static final URI DEFAULT_OPENLINEAGE_URI =
+        OpenLineageClientUtils.toUri("http://localhost:8080");
 
     private URI uri;
 
@@ -122,11 +123,11 @@ public final class HttpTransport extends Transport implements Closeable {
     }
 
     public Builder uri(@NonNull String urlAsString) {
-      return uri(Utils.toUri(urlAsString));
+      return uri(OpenLineageClientUtils.toUri(urlAsString));
     }
 
     public Builder uri(@NonNull String urlAsString, @NonNull Map<String, String> queryParams) {
-      return uri(Utils.toUri(urlAsString), queryParams);
+      return uri(OpenLineageClientUtils.toUri(urlAsString), queryParams);
     }
 
     public Builder uri(@NonNull URI uri) {

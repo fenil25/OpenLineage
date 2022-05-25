@@ -13,7 +13,8 @@ public final class Clients {
   }
 
   public static OpenLineageClient newClient(ConfigPathProvider configPathProvider) {
-    final OpenLineageYaml openLineageYaml = Utils.loadOpenLineageYaml(configPathProvider);
+    final OpenLineageYaml openLineageYaml =
+        OpenLineageClientUtils.loadOpenLineageYaml(configPathProvider);
     final TransportFactory factory = new TransportFactory(openLineageYaml.getTransportConfig());
     final Transport transport = factory.build();
     // ...

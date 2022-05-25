@@ -5,7 +5,7 @@ package io.openlineage.spark.agent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.openlineage.client.OpenLineage;
-import io.openlineage.client.Utils;
+import io.openlineage.client.OpenLineageClientUtils;
 import io.openlineage.client.shaded.com.fasterxml.jackson.core.type.TypeReference;
 import io.openlineage.client.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import io.openlineage.spark.agent.lifecycle.MatchesMapRecursively;
@@ -28,7 +28,7 @@ public class OpenLineageRunEventTest {
 
   @Test
   public void testSerializeRunEvent() throws IOException, URISyntaxException {
-    ObjectMapper mapper = Utils.newObjectMapper();
+    ObjectMapper mapper = OpenLineageClientUtils.newObjectMapper();
 
     ZonedDateTime dateTime = ZonedDateTime.parse("2021-01-01T00:00:01.000000000+00:00[UTC]");
     OpenLineage ol =

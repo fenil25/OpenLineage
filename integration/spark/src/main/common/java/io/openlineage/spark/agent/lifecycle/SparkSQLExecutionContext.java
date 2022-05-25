@@ -4,7 +4,7 @@ package io.openlineage.spark.agent.lifecycle;
 
 import io.openlineage.client.OpenLineage;
 import io.openlineage.client.OpenLineage.RunEvent;
-import io.openlineage.client.Utils;
+import io.openlineage.client.OpenLineageClientUtils;
 import io.openlineage.spark.agent.EventEmitter;
 import io.openlineage.spark.agent.util.PlanUtils;
 import io.openlineage.spark.api.OpenLineageContext;
@@ -84,7 +84,7 @@ class SparkSQLExecutionContext implements ExecutionContext {
             buildJob(olContext.getQueryExecution().get()),
             endEvent);
 
-    log.debug("Posting event for end {}: {}", executionId, Utils.toJson(event));
+    log.debug("Posting event for end {}: {}", executionId, OpenLineageClientUtils.toJson(event));
     eventEmitter.emit(event);
   }
 

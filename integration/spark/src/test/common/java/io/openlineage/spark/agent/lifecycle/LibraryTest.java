@@ -10,7 +10,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import com.google.common.io.Resources;
 import io.openlineage.client.OpenLineage;
-import io.openlineage.client.Utils;
+import io.openlineage.client.OpenLineageClientUtils;
 import io.openlineage.client.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import io.openlineage.client.shaded.com.fasterxml.jackson.core.type.TypeReference;
 import io.openlineage.client.shaded.com.fasterxml.jackson.databind.ObjectMapper;
@@ -119,7 +119,7 @@ public class LibraryTest {
     List<OpenLineage.RunEvent> events = lineageEvent.getAllValues();
     assertEquals(2, events.size());
 
-    ObjectMapper objectMapper = Utils.newObjectMapper();
+    ObjectMapper objectMapper = OpenLineageClientUtils.newObjectMapper();
     for (int i = 0; i < events.size(); i++) {
       log.info("Iteration {}", i);
       OpenLineage.RunEvent event = events.get(i);
@@ -173,7 +173,9 @@ public class LibraryTest {
   private void verifySerialization(List<OpenLineage.RunEvent> events)
       throws JsonProcessingException {
     for (OpenLineage.RunEvent event : events) {
-      assertNotNull("Event can serialize", Utils.newObjectMapper().writeValueAsString(event));
+      assertNotNull(
+          "Event can serialize",
+          OpenLineageClientUtils.newObjectMapper().writeValueAsString(event));
     }
   }
 }

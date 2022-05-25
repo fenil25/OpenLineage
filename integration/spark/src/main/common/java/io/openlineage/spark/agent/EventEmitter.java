@@ -5,7 +5,7 @@ package io.openlineage.spark.agent;
 import io.openlineage.client.OpenLineage;
 import io.openlineage.client.OpenLineageClient;
 import io.openlineage.client.OpenLineageClientException;
-import io.openlineage.client.Utils;
+import io.openlineage.client.OpenLineageClientUtils;
 import io.openlineage.client.transports.HttpTransport;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,7 +63,7 @@ public class EventEmitter {
   public void emit(OpenLineage.RunEvent event) {
     try {
       this.client.emit(event);
-      log.info("Emitting lineage completed successfully: {}", Utils.toJson(event));
+      log.info("Emitting lineage completed successfully: {}", OpenLineageClientUtils.toJson(event));
     } catch (OpenLineageClientException exception) {
       log.error("Could not emit lineage w/ exception", exception);
     }
