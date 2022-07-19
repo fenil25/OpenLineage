@@ -394,7 +394,7 @@ fn parse_stmt(stmt: &Statement, context: &mut Context) -> Result<(), String> {
             Ok(())
         }
         Statement::CreateTable {
-            name, query, like, ..
+            name, query, like, clone, ..
         } => {
             if let Some(boxed_query) = query {
                 parse_query(boxed_query.as_ref(), context)?;
@@ -402,6 +402,10 @@ fn parse_stmt(stmt: &Statement, context: &mut Context) -> Result<(), String> {
             if let Some(like_table) = like {
                 context.add_input(&like_table.to_string());
             }
+            if let Some(clone) = clone {
+                context.add_input(&clone.to_string());
+            }
+
             context.add_output(&name.to_string());
             Ok(())
         }
@@ -420,6 +424,23 @@ fn parse_stmt(stmt: &Statement, context: &mut Context) -> Result<(), String> {
                     parse_table_factor(&join.relation, context)?;
                 }
             }
+            if let Some(expr) = selection {
+                parse_expr(expr, context)?;
+            }
+            Ok(())
+        }
+        Statement::Delete {
+            table_name,
+            using,
+            selection,
+        } => {
+            let table_name = get_table_name_from_table_factor(table_name)?;
+            context.add_output(&table_name.to_string());
+
+            if let Some(using) = using {
+                parse_table_factor(using, context)?;
+            }
+
             if let Some(expr) = selection {
                 parse_expr(expr, context)?;
             }
